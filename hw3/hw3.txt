@@ -1,0 +1,156 @@
+NAME: Michael Korzon
+LOGIN: korzorro
+
+
+HW3 
+Problem 1
+
++--------+--------+--------+--------+--------+
+|        |  CODE  | STATIC |  HEAP  | STACK  |
++--------+--------+--------+--------+--------+
+| arg    |        |        |        |   X    |
++--------+--------+--------+--------+--------+
+| str    |        |        |   X    |        |
++--------+--------+--------+--------+--------+
+| num    |        |   X    |        |        |
++--------+--------+--------+--------+--------+
+| text   |        |        |   X    |        |
++--------+--------+--------+--------+--------+
+| *text  |        |        |        |   X    |
++--------+--------+--------+--------+--------+
+| A      |   X    |        |        |        |
++--------+--------+--------+--------+--------+
+
+
+Problem 2
+
+#include <stdio.h>
+
+void get_data(int *num, char *name) {
+  printf("Enter a number: ");
+  scanf("%i", num);
+  printf("Enter a name: ");
+  scanf("%15s", name);
+}
+
+void print_data(int num, char *name) {
+  printf("The number entered is \"%i.\"\n", num);
+  printf("The name entered is \"%s.\"\n", name);
+}
+
+int main() {
+  int num;
+  char name[15];
+  get_data(&num, name);
+  while (num) {
+    print_data(num, name);
+    get_data(&num, name);
+  }
+}
+
+
+Problem 3
+
+#include <stdio.h>
+#include <time.h>
+#include <stdlib.h>
+
+// Sort an array A using insertion sort_arrat. Notice it is to be passed by
+// reference.
+void sort_array(int *A, int n){
+  int tmp;
+  int i;
+  int j;
+
+  for(i=1; i<n; i++){
+    tmp = *(A + i);
+    j=i-1;
+    // For each element in A, search for where it belong in the subarray
+    // preceeding it's current location
+    while(tmp<*(A + j) && j>=0){
+      *(A + j + 1)=*(A + j);
+      j-=1;
+    }
+    *(A + j + 1)=tmp;
+  }
+}
+
+int main(){
+  //Allows use to generate random numbers
+  srand(time(NULL));
+
+  //Read a user input integer and store it in n
+  int n;
+  printf("Enter an integer n: ");
+  scanf("%d",&n);
+
+  //Array array. Change this to become a dynamic array through malloc.
+  int *array = (int *)malloc(n);
+
+  //Assign each element in the array a random number between 0 and 31,999
+  int i;
+  for (i=0; i<n; i++){
+    *(array + i)=rand()%32000; //This line assigns random numbers
+  }
+
+  //Prints out the elements of the unsorted array
+  int x;
+  printf("The unsorted array is: ");
+  for (x=0; x<n; x++){
+    printf("%d ", *(array + x));
+  }
+  printf("\n");
+	
+  //Calls the sort function to sort the array
+  sort_array(array,n);
+	
+  //Print out the elements of the now (supposedly) sorted array.
+  printf("The sorted array is: ");
+  for (x=0; x<n; x++){
+    printf("%d ", *(array + x));
+  }
+  printf("\n");
+  return 0;
+
+}
+
+
+Problem 4
+
+a) 
+
+If you compile and run this code, the program will run until it cannot allocate
+more memory. The memory might be forever lost depending on how your operating
+system manages processes. In Linux the process is killed and all memory is
+freed. The problem is that all memory in your system can be leaked. By changing
+malloc to realloc and assigning the allocated memory to a variable, we keep
+all the memory from being leaked.
+
+#include <stdlib.h>
+
+int main(void) {
+  unsigned long size = 100;
+  char* ptr = (char *) malloc(size);
+  while (ptr) {
+    size += 100;
+    ptr = realloc(ptr, size);
+  }
+
+  return 0;  
+} 
+
+
+b)
+
+#include <stdlib.h>
+
+void func(void) {
+  int* arr = malloc(20 * sizeof(int));
+  arr[20] = 0;
+  free(arr);
+}
+
+int main(void) {
+  func();
+  return 0;
+}
