@@ -1,0 +1,134 @@
+HW 3
+__________________________________________________________________
+Problem 1
+arg = HEAP
+str = STATIC
+num = STATIC
+text = CODE
+*text = STACK
+A = HEAP
+__________________________________________________________________
+Problem 2
+
+#include <stdio.h>
+
+void userInput(int* num, char* name);
+void output(char* name, int num);
+
+int main(void)
+{
+	int num =1;
+	char name[15];
+	
+	while (num != 0)
+	{
+		userInput(&num, name);
+		output(name, num);
+	}
+	
+}
+
+void userInput(int* num, char* name)
+{
+	int userNum;
+	char userName[15];
+	
+	printf("Enter a name less than 15 characters and a number (type 0 to exit)\n");
+	
+	scanf("%s", userName);
+	scanf("%d", &userNum);
+	
+	*num = userNum;
+	name= userName;
+	
+}
+
+void output(char* name, int num)
+{
+	printf("name: %s\nnumber: %d\n\n", name, num);
+}
+__________________________________________________________________
+Problem 3
+#include <stdio.h>
+#include <time.h>
+#include <stdlib.h>
+
+//Sort an array A using insertion sort_array. Notice it is to be passed by reference.
+void sort_array(int  *A, int n){
+	int tmp;
+	int i;
+	int j;
+
+	for(i=1; i<n; i++){
+		tmp = A[i];
+		j=i-1;
+		//For each element in A, search for where it belong in the subarray preceeding it's current location
+		while(tmp<A[j] && j>=0){
+			A[j+1]=A[j];
+			j-=1;
+		}
+		A[j+1]=tmp;
+	}
+}
+
+int main(){
+	//Allows use to generate random numbers
+	srand(time(NULL));
+
+	//Read a user input integer and store it in n
+	int n;
+	printf("Enter an integer n: ");
+	scanf("%d",&n);
+
+	//Array array. Change this to become a dynamic array through malloc.
+	int* array;
+	array = (int *) malloc(n*sizeof(int));
+
+	//Assign each element in the array a random number between 0 and 31,999
+	int i;
+	for (i=0; i<n; i++){
+		array[i]=rand()%32000; //This line assigns random numbers
+	}
+
+	//Prints out the elements of the unsorted array
+	int x;
+	printf("The unsorted array is: ");
+	for (x=0; x<n; x++){
+		printf("%d ",array[x]);
+	}
+	printf("\n");
+
+	//Calls the sort function to sort the array
+	sort_array(array,n);
+
+	//Print out the elements of the now (supposedly) sorted array.
+	printf("The sorted array is: ");
+	for (x=0; x<n; x++){
+		printf("%d ",array[x]);
+	}
+	printf("\n");
+	return 0;
+
+}
+__________________________________________________________________
+Problem 4
+a) The following code will keep allocating memory
+#include <stdlib.h>
+int main(void)
+{
+int*memory = (malloc(100));
+return 0;
+}
+
+b) The arralist was originally out of bounds when malloc(21 * sizeof(int)); was malloc(20 * sizeof(int));
+#include <stdlib.h>
+void func(void)
+{
+int* arr = malloc(21 * sizeof(int));
+arr[20] = 0;
+}
+int main(void)
+{
+func();
+return 0;
+}
