@@ -1,14 +1,14 @@
-HW 3
+HW 3 Grade 26/30
 __________________________________________________________________
-Problem 1
-arg = HEAP
+Problem 1  1/3
+arg = stack
 str = STATIC
-num = STATIC
-text = CODE
-*text = STACK
-A = HEAP
+num = code
+text = stack
+*text = heap
+A = code
 __________________________________________________________________
-Problem 2
+Problem 2  10/10
 
 #include <stdio.h>
 
@@ -48,7 +48,7 @@ void output(char* name, int num)
 	printf("name: %s\nnumber: %d\n\n", name, num);
 }
 __________________________________________________________________
-Problem 3
+Problem 3 7/7
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
@@ -111,12 +111,12 @@ int main(){
 
 }
 __________________________________________________________________
-Problem 4
+Problem 4 8/10
 a) The following code will keep allocating memory
 #include <stdlib.h>
 int main(void)
 {
-int*memory = (malloc(100));
+int*memory = (malloc(100)); /* incomplete: should add sizeof (int)
 return 0;
 }
 
